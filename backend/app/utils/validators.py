@@ -61,3 +61,9 @@ def require_json(f):
         return f(*args, **kwargs)
 
     return decorated
+
+"""用在：
+routes 接口层
+services 业务层
+保证数据干净、合法
+"""
