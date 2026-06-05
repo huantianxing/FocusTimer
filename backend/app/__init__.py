@@ -113,13 +113,13 @@ def init_default_data():
     ]
 
     for tag_data in default_tags:
-        existing = Tag.query.filter_by(name=tag_data['name']).first()
+        existing = db.session.execute(db.select(Tag).filter_by(name=tag_data['name'])).scalar_one_or_none()
         if not existing:
             tag = Tag(name=tag_data['name'], color=tag_data['color'])
             db.session.add(tag)
 
     # 初始化用户设置（单用户，id=1）
-    settings = UserSettings.query.get(1)
+    settings = db.session.execute(db.select(UserSettings).filter_by(id=1)).scalar_one_or_none()
     if not settings:
         settings = UserSettings(id=1)
         db.session.add(settings)
