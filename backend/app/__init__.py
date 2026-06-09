@@ -70,7 +70,7 @@ def register_api_routes():
     from backend.app.routes.stats import TodayStatsAPI, TrendStatsAPI, TaskRankingAPI
     from backend.app.routes.tags import TagsAPI, TagDetailAPI
     from backend.app.routes.settings import SettingsAPI, SoundUploadAPI
-    from backend.app.routes.templates import TemplatesAPI
+    from backend.app.routes.templates import TemplatesAPI, TemplateDetailAPI
 
     # 计时相关
     api.add_resource(TimerAPI, '/api/timer/start', '/api/timer/pause', '/api/timer/resume', '/api/timer/end')
@@ -97,6 +97,12 @@ def register_api_routes():
 
     # 模板相关
     api.add_resource(TemplatesAPI, '/api/templates')
+    api.add_resource(TemplateDetailAPI, '/api/templates/<int:template_id>')
+
+    # 备份相关（手动触发备份 + 备份列表）
+    from backend.app.routes.backup import BackupAPI, BackupListAPI
+    api.add_resource(BackupAPI, '/api/backup')
+    api.add_resource(BackupListAPI, '/api/backup/list')
 
 
 def init_default_data():

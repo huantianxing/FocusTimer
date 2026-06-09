@@ -1,6 +1,10 @@
+"""
+任务模板 API 路由层
+职责：接收前端请求 → 校验参数 → 操作数据库 → 返回 JSON
+"""
+
 from flask import request
 from flask_restful import Resource
-import json
 
 from backend.app import db
 from backend.app.models import TaskTemplate
@@ -8,10 +12,10 @@ from backend.app.utils.validators import validate_title
 
 
 class TemplatesAPI(Resource):
-    """任务模板管理"""
+    """任务模板列表 - 获取全部、创建新模板"""
 
     def get(self):
-        """获取所有任务模板"""
+        """获取所有任务模板（按排序顺序）"""
         templates = TaskTemplate.query.order_by(TaskTemplate.sort_order, TaskTemplate.id).all()
 
         return {
@@ -21,7 +25,7 @@ class TemplatesAPI(Resource):
         }, 200
 
     def post(self):
-        """创建任务模板"""
+        """创建新任务模板"""
         data = request.get_json() if request.is_json else {}
 
         title = data.get('title', '').strip()
@@ -29,7 +33,7 @@ class TemplatesAPI(Resource):
         estimated_minutes = data.get('estimated_minutes')
         sort_order = data.get('sort_order', 0)
 
-        # 验证标题
+        # 校验标题
         valid, result = validate_title(title)
         if not valid:
             return {'code': 400, 'message': result, 'data': None}, 400
@@ -51,16 +55,11 @@ class TemplatesAPI(Resource):
             'data': template.to_dict()
         }, 200
 
-    def put(self):
-        """批量更新模板排序（可选）"""
-        # 暂不实现批量更新
-        return {'code': 404, 'message': 'Not Found', 'data': None}, 404
 
-    def delete(self):
-        """删除模板（需要ID）"""
-        return {'code': 404, 'message': '请指定要删除的模板ID', 'data': None}, 404
+class TemplateDetailAPI(Resource):
+    """单个模板操作 - 删除"""
 
-    def delete_by_id(self, template_id):
+    def delete(self, template_id):
         """删除指定模板"""
         template = TaskTemplate.query.get(template_id)
         if not template:
