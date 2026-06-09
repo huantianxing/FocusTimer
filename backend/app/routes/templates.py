@@ -61,7 +61,7 @@ class TemplateDetailAPI(Resource):
 
     def delete(self, template_id):
         """删除指定模板"""
-        template = TaskTemplate.query.get(template_id)
+        template = db.session.get(TaskTemplate, template_id)
         if not template:
             return {'code': 404, 'message': '模板不存在', 'data': None}, 404
 

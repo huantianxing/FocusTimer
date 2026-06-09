@@ -118,7 +118,7 @@ class RecordDetailAPI(Resource):
     """修改记录"""
 
     def put(self, record_id):
-        record = TimerRecord.query.get(record_id)
+        record = db.session.get(TimerRecord, record_id)
         if not record:
             return {'code': 404, 'message': '记录不存在', 'data': None}, 404
 
@@ -195,7 +195,7 @@ class RecordInvalidAPI(Resource):
     """标记记录为无效"""
 
     def post(self, record_id):
-        record = TimerRecord.query.get(record_id)
+        record = db.session.get(TimerRecord, record_id)
         if not record:
             return {'code': 404, 'message': '记录不存在', 'data': None}, 404
 

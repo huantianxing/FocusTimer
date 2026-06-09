@@ -97,7 +97,7 @@ def pause_timer():
     if current_timer['record_id'] is None:
         return False, {'code': 422, 'message': '没有进行中的计时任务', 'data': None}, 422
 
-    record = TimerRecord.query.get(current_timer['record_id'])
+    record = db.session.get(TimerRecord, current_timer['record_id'])
     if not record or record.status != 0:
         return False, {'code': 422, 'message': '没有进行中的计时任务', 'data': None}, 422
 
@@ -136,7 +136,7 @@ def resume_timer():
     if current_timer['record_id'] is None:
         return False, {'code': 422, 'message': '没有暂停的计时任务', 'data': None}, 422
 
-    record = TimerRecord.query.get(current_timer['record_id'])
+    record = db.session.get(TimerRecord, current_timer['record_id'])
     if not record or record.status != 2:
         return False, {'code': 422, 'message': '没有暂停的计时任务', 'data': None}, 422
 
@@ -180,7 +180,7 @@ def end_timer():
     if current_timer['record_id'] is None:
         return False, {'code': 422, 'message': '没有进行中的计时任务', 'data': None}, 422
 
-    record = TimerRecord.query.get(current_timer['record_id'])
+    record = db.session.get(TimerRecord, current_timer['record_id'])
     if not record:
         reset_current_timer()
         return False, {'code': 422, 'message': '记录不存在', 'data': None}, 422
@@ -232,7 +232,7 @@ def get_current_timer():
     if current_timer['record_id'] is None:
         return True, {'code': 200, 'message': 'ok', 'data': None}, 200
 
-    record = TimerRecord.query.get(current_timer['record_id'])
+    record = db.session.get(TimerRecord, current_timer['record_id'])
 
     # 状态不一致，重置
     if not record or record.status not in [0, 2]:

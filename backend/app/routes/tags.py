@@ -77,7 +77,7 @@ class TagDetailAPI(Resource):
 
     def put(self, tag_id):
         """修改标签"""
-        tag = Tag.query.get(tag_id)
+        tag = db.session.get(Tag, tag_id)
         if not tag:
             return {'code': 404, 'message': '标签不存在', 'data': None}, 404
 
@@ -113,7 +113,7 @@ class TagDetailAPI(Resource):
 
     def delete(self, tag_id):
         """删除标签"""
-        tag = Tag.query.get(tag_id)
+        tag = db.session.get(Tag, tag_id)
         if not tag:
             return {'code': 404, 'message': '标签不存在', 'data': None}, 404
 

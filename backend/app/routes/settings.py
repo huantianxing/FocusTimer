@@ -16,7 +16,7 @@ class SettingsAPI(Resource):
 
     def get(self):
         """获取用户设置"""
-        settings = UserSettings.query.get(1)
+        settings = db.session.get(UserSettings, 1)
         if not settings:
             # 如果不存在，创建默认设置
             settings = UserSettings(id=1)
@@ -30,7 +30,7 @@ class SettingsAPI(Resource):
         }, 200
 
     def put(self):
-        settings = UserSettings.query.get(1)
+        settings = db.session.get(UserSettings, 1)
         if not settings:
             settings = UserSettings(id=1)
             db.session.add(settings)
