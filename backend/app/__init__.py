@@ -5,12 +5,14 @@ from flask_restful import Api
 
 # 全局扩展实例，创建全局插件
 db = SQLAlchemy()
-api = Api()
 
 
 def create_app(config_name='default'):
     """应用工厂函数"""
     app = Flask(__name__, instance_path=None)
+
+    # 每个 app 实例创建独立的 Api 对象，避免多次调用 create_app 时路由重复注册
+    api = Api()
 
     # 加载配置
     from backend.config import config
@@ -24,14 +26,16 @@ def create_app(config_name='default'):
     # 初始化扩展
     db.init_app(app)
     CORS(app, origins=['http://localhost:5173', 'http://127.0.0.1:5173'])
+
+    # 注册路由（传入 api 实例 — 必须在 api.init_app 之前添加资源）
+    register_blueprints(app)
+    register_api_routes(api)
+
+    # Flask-RESTful 初始化（注册已添加的资源到 app）
     api.init_app(app)
 
     # 注册错误处理器
     register_error_handlers(app)
-
-    # 注册路由
-    register_blueprints(app)
-    register_api_routes()
 
     # 创建数据库表
     with app.app_context():
@@ -63,7 +67,7 @@ def register_blueprints(app):
     pass
 
 
-def register_api_routes():
+def register_api_routes(api):
     """注册API路由"""
     from backend.app.routes.timer import TimerAPI, CurrentTimerAPI
     from backend.app.routes.records import TodayRecordsAPI, RecordsAPI, RecordDetailAPI, RecordInvalidAPI

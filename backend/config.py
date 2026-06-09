@@ -1,4 +1,5 @@
 import os
+import tempfile
 from datetime import timedelta
 
 
@@ -45,8 +46,17 @@ class ProductionConfig(Config):
     TESTING = False
 
 
+class TestingConfig(Config):
+    """测试专用配置：内存数据库，不写磁盘"""
+    TESTING = True
+    DEBUG = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    BACKUP_DIR = os.path.join(tempfile.gettempdir(), 'timerfocus_test_backups')
+
+
 config = {
     'development': DevelopmentConfig,
     'production': ProductionConfig,
+    'testing': TestingConfig,
     'default': DevelopmentConfig
 }
