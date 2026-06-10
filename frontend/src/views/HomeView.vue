@@ -31,11 +31,16 @@ onUnmounted(() => {
   <div class="home-view">
     <!-- 主内容区 -->
     <div class="main-content">
-      <!-- 计时面板 -->
+      <!-- 计时面板 — 紧凑布局 -->
       <div class="timer-panel card">
-        <TimerDisplay />
-        <PomodoroIndicator />
-        <TimerControls @started="recordsStore.fetchTodayRecords()" @stopped="recordsStore.fetchTodayRecords()" />
+        <div class="timer-body">
+          <TimerDisplay />
+          <PomodoroIndicator />
+          <TimerControls
+            @started="recordsStore.fetchTodayRecords()"
+            @stopped="recordsStore.fetchTodayRecords()"
+          />
+        </div>
       </div>
 
       <!-- 今日概览 -->
@@ -73,24 +78,26 @@ onUnmounted(() => {
   flex: 1;
   min-width: 0;
   overflow-y: auto;
-  padding: var(--space-xl);
+  padding: var(--space-lg) var(--space-xl);
   display: flex;
   flex-direction: column;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 }
 
+/* ---- 计时面板 ---- */
 .timer-panel {
   text-align: center;
   border-radius: var(--radius-xl);
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   box-shadow: var(--shadow-lg);
-  padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+  padding: var(--space-lg) var(--space-xl);
   position: relative;
   overflow: hidden;
   max-width: 800px;
   width: 100%;
   align-self: center;
+  flex-shrink: 0;
 }
 
 .timer-panel::before {
@@ -103,11 +110,19 @@ onUnmounted(() => {
   background: linear-gradient(135deg, var(--primary-color), var(--primary-light), var(--success-color));
 }
 
+.timer-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
 /* ---- 图表行 ---- */
 .charts-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: var(--space-md);
+  flex-shrink: 0;
 }
 
 .chart-col {
@@ -126,7 +141,6 @@ onUnmounted(() => {
 
 /* ==================== 响应式 ==================== */
 
-/* 平板及以下：图表堆叠，侧边栏变窄 */
 @media (max-width: 1100px) {
   .charts-row {
     grid-template-columns: 1fr;
@@ -136,7 +150,6 @@ onUnmounted(() => {
   }
 }
 
-/* 小平板：侧边栏隐藏在底部（可选折叠）或保留右侧 */
 @media (max-width: 860px) {
   .home-view {
     flex-direction: column;
@@ -152,14 +165,13 @@ onUnmounted(() => {
   }
 }
 
-/* 手机 */
 @media (max-width: 640px) {
   .main-content {
     padding: var(--space-sm);
-    gap: var(--space-md);
+    gap: var(--space-sm);
   }
   .timer-panel {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-md);
   }
 }
 </style>

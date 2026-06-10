@@ -2,9 +2,9 @@
 /**
  * 计时控制按钮组
  * 根据当前状态动态显示:
- * - 空闲 → [开始]
- * - 计时中 → [暂停] [结束]
- * - 已暂停 → [继续] [结束]
+ * - 空闲 -> [开始]
+ * - 计时中 -> [暂停] [结束]
+ * - 已暂停 -> [继续] [结束]
  */
 import { ref, computed } from 'vue'
 import { useTimerStore } from '@/stores/timer'
@@ -78,46 +78,44 @@ function onTaskModalStarted() {
       开始计时
     </el-button>
 
-    <!-- 暂停按钮（进行中） -->
-    <el-button
-      v-if="canPause"
-      type="warning"
-      size="large"
-      round
-      :icon="'VideoPause'"
-      :loading="loading"
-      @click="handlePause"
-    >
-      暂停
-    </el-button>
+    <!-- 暂停 + 结束（进行中） -->
+    <template v-if="canPause || canResume">
+      <el-button
+        v-if="canPause"
+        type="warning"
+        size="large"
+        round
+        :icon="'VideoPause'"
+        :loading="loading"
+        @click="handlePause"
+      >
+        暂停
+      </el-button>
 
-    <!-- 继续按钮（已暂停） -->
-    <el-button
-      v-if="canResume"
-      type="success"
-      size="large"
-      round
-      :icon="'VideoPlay'"
-      :loading="loading"
-      @click="handleResume"
-    >
-      继续
-    </el-button>
+      <el-button
+        v-if="canResume"
+        type="success"
+        size="large"
+        round
+        :icon="'VideoPlay'"
+        :loading="loading"
+        @click="handleResume"
+      >
+        继续
+      </el-button>
 
-    <!-- 结束按钮（进行中或已暂停） -->
-    <el-button
-      v-if="canEnd"
-      type="danger"
-      size="large"
-      round
-      :icon="'SwitchButton'"
-      :loading="loading"
-      @click="handleEnd"
-    >
-      结束
-    </el-button>
+      <el-button
+        type="danger"
+        size="large"
+        round
+        :icon="'SwitchButton'"
+        :loading="loading"
+        @click="handleEnd"
+      >
+        结束
+      </el-button>
+    </template>
 
-    <!-- 任务弹窗 -->
     <TaskModal
       :visible="showTaskModal"
       @update:visible="showTaskModal = $event"
@@ -132,21 +130,24 @@ function onTaskModalStarted() {
   justify-content: center;
   flex-wrap: wrap;
   gap: var(--space-md);
-  margin: var(--space-md) 0 var(--space-lg);
+  padding: var(--space-md) 0 0;
 }
+
 :deep(.el-button--large) {
-  min-width: 130px;
-  height: 52px;
+  min-width: 120px;
+  height: 48px;
   font-size: var(--font-md);
   font-weight: 600;
   border-radius: var(--radius-md);
   letter-spacing: -0.01em;
   transition: all var(--transition-base);
 }
+
 :deep(.el-button--large:hover) {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
+
 :deep(.el-button--primary.el-button--large) {
   background: var(--primary-color);
   border-color: var(--primary-color);
@@ -159,7 +160,7 @@ function onTaskModalStarted() {
   }
   :deep(.el-button--large) {
     min-width: 100px;
-    height: 44px;
+    height: 40px;
     font-size: var(--font-sm);
   }
 }
