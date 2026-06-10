@@ -1,0 +1,128 @@
+/* ============================================================
+ * TimerFocus 全局样式
+ * 参考: req.md 5.1 / 5.3 节
+ * ============================================================ */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #app {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* 应用主布局 */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.app-header {
+  height: 56px;
+  background-color: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  flex-shrink: 0;
+  z-index: 100;
+}
+
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.app-sidebar {
+  width: 320px;
+  background-color: var(--bg-card);
+  border-right: 1px solid var(--border-color);
+  overflow-y: auto;
+  flex-shrink: 0;
+  transition: background-color 0.3s ease;
+}
+
+.app-main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  background-color: var(--bg-primary);
+  transition: background-color 0.3s ease;
+}
+
+/* 卡片通用样式 */
+.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 20px;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* 滚动条样式（深色模式定制） */
+[data-theme="dark"] ::-webkit-scrollbar {
+  width: 6px;
+}
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #1a1a2e;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #4a4a6a;
+  border-radius: 3px;
+}
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #6a6a8a;
+}
+
+/* Element Plus 全局覆盖 — 让 el-card/el-table 等跟随主题 */
+[data-theme="dark"] .el-card {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .el-table {
+  --el-table-bg-color: var(--bg-card);
+  --el-table-tr-bg-color: var(--bg-card);
+  --el-table-header-bg-color: var(--bg-hover);
+  --el-table-border-color: var(--border-color);
+  --el-table-text-color: var(--text-primary);
+  --el-table-header-text-color: var(--text-secondary);
+}
+
+[data-theme="dark"] .el-input__wrapper {
+  background-color: var(--bg-hover);
+  box-shadow: 0 0 0 1px var(--border-color) inset;
+}
+
+[data-theme="dark"] .el-input__inner {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .el-select .el-input .el-input__wrapper {
+  background-color: var(--bg-hover);
+}
+
+[data-theme="dark"] .el-dialog {
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] .el-pagination button,
+[data-theme="dark"] .el-pager li {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
