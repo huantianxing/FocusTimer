@@ -1,0 +1,37 @@
+/* ============================================================
+ * TimerFocus 主题配置（CSS Variables）
+ * 浅色模式（默认） + 深色模式（data-theme="dark"）
+ * 参考: req.md 5.1 节
+ * ============================================================ */
+
+:root {
+  /* 浅色模式（默认） */
+  --bg-primary: #f5f7fa;
+  --bg-card: #ffffff;
+  --bg-hover: #f0f2f5;
+  --text-primary: #303133;
+  --text-secondary: #606266;
+  --text-muted: #909399;
+  --border-color: #dcdfe6;
+  --primary-color: #409eff;
+  --success-color: #67c23a;
+  --warning-color: #e6a23c;
+  --danger-color: #f56c6c;
+  --chart-bg: #ffffff;
+}
+
+[data-theme="dark"] {
+  /* 深色模式 */
+  --bg-primary: #1a1a2e;
+  --bg-card: #16213e;
+  --bg-hover: #0f3460;
+  --text-primary: #eaeaea;
+  --text-secondary: #a0a0a0;
+  --text-muted: #6c757d;
+  --border-color: #2a2a4a;
+  --primary-color: #4cc9f0;
+  --success-color: #52b788;
+  --warning-color: #ffb703;
+  --danger-color: #e94560;
+  --chart-bg: #16213e;
+}
