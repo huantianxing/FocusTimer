@@ -130,12 +130,37 @@ function onTaskModalStarted() {
 .timer-controls {
   display: flex;
   justify-content: center;
-  gap: 16px;
-  margin: 16px 0 24px;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  margin: var(--space-md) 0 var(--space-lg);
 }
-.el-button--large {
-  min-width: 140px;
-  height: 48px;
-  font-size: 16px;
+:deep(.el-button--large) {
+  min-width: 130px;
+  height: 52px;
+  font-size: var(--font-md);
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  letter-spacing: -0.01em;
+  transition: all var(--transition-base);
+}
+:deep(.el-button--large:hover) {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+:deep(.el-button--primary.el-button--large) {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 16px var(--primary-glow);
+}
+
+@media (max-width: 480px) {
+  .timer-controls {
+    gap: var(--space-sm);
+  }
+  :deep(.el-button--large) {
+    min-width: 100px;
+    height: 44px;
+    font-size: var(--font-sm);
+  }
 }
 </style>

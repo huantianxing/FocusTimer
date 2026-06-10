@@ -12,6 +12,7 @@ import { getChartTheme } from '@/utils/chartConfig'
 const themeStore = useThemeStore()
 const chartRef = ref(null)
 let chart = null
+let resizeObserver = null
 
 const COLORS = ['#409eff', '#67c23a', '#e6a23c', '#f56c6c', '#909399']
 
@@ -61,10 +62,6 @@ async function load() {
   } catch { /* ignore */ }
 }
 
-function handleResize() {
-  chart?.resize()
-}
-
 watch(() => themeStore.resolved, () => {
   chart?.dispose()
   chart = null
@@ -73,11 +70,16 @@ watch(() => themeStore.resolved, () => {
 
 onMounted(() => {
   load()
-  window.addEventListener('resize', handleResize)
+  if (chartRef.value) {
+    resizeObserver = new ResizeObserver(() => {
+      chart?.resize()
+    })
+    resizeObserver.observe(chartRef.value)
+  }
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
+  resizeObserver?.disconnect()
   chart?.dispose()
 })
 </script>
@@ -91,15 +93,30 @@ onUnmounted(() => {
 
 <style scoped>
 .chart-container {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-lg);
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+}
+.chart-container:hover {
+  box-shadow: var(--shadow-md);
 }
 .chart-title {
-  font-size: 15px;
+  font-size: var(--font-md);
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-md);
+  flex-shrink: 0;
 }
 .chart-body {
+  flex: 1;
+  min-height: 200px;
   width: 100%;
-  height: 240px;
 }
 </style>

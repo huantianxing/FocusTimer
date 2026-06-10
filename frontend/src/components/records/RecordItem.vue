@@ -56,9 +56,10 @@ const canEdit = computed(() => [1, 3].includes(props.record.status)) // 已完�
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 8px 12px;
-  border-radius: 4px;
-  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-sm);
+  transition: all var(--transition-fast);
 }
 .record-item:hover {
   background: var(--bg-hover);
@@ -66,13 +67,16 @@ const canEdit = computed(() => [1, 3].includes(props.record.status)) // 已完�
 .item-time {
   flex: 1;
   color: var(--text-secondary);
-  font-family: monospace;
+  font-family: 'Plus Jakarta Sans', monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--font-xs);
 }
 .item-duration {
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: 600;
   min-width: 48px;
   text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 .item-status {
   min-width: 56px;
@@ -80,5 +84,10 @@ const canEdit = computed(() => [1, 3].includes(props.record.status)) // 已完�
 }
 .item-action {
   color: var(--primary-color);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+.item-action:hover {
+  color: var(--primary-light);
 }
 </style>

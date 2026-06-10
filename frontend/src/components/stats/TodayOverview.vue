@@ -74,37 +74,73 @@ onMounted(load)
 .overview-cards {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  margin-bottom: 24px;
+  gap: var(--space-md);
 }
+
 .overview-card {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 20px;
+  gap: var(--space-md);
+  padding: var(--space-lg) 20px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+  min-width: 0;
 }
+
+.overview-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
 .card-icon {
-  font-size: 28px;
+  font-size: 32px;
+  line-height: 1;
+  flex-shrink: 0;
 }
+
 .card-info {
   min-width: 0;
 }
+
 .card-title {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 4px;
-}
-.card-value {
-  font-size: 18px;
+  font-size: var(--font-xs);
   font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
+.card-value {
+  font-size: var(--font-lg);
+  font-weight: 700;
+  letter-spacing: -0.02em;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  line-height: 1.3;
 }
 
-@media (max-width: 768px) {
+/* ==================== 响应式 ==================== */
+
+@media (max-width: 1100px) {
   .overview-cards {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .overview-cards {
+    grid-template-columns: 1fr;
+  }
+  .card-icon {
+    font-size: 24px;
+  }
+  .card-value {
+    font-size: var(--font-md);
   }
 }
 </style>

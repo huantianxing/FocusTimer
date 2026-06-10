@@ -4,10 +4,12 @@
  * 筛选工具栏 + 分页表格
  */
 import { ref, reactive, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useRecordsStore } from '@/stores/records'
 import { getTags } from '@/api'
 import { formatDateTime, formatHumanReadable } from '@/utils/timeFormat'
 
+const router = useRouter()
 const recordsStore = useRecordsStore()
 
 // 筛选参数
@@ -31,7 +33,6 @@ const statusMap = {
 }
 
 async function loadData() {
-  // 加载标签列表用于筛选
   try {
     const res = await getTags()
     if (res.code === 200) tags.value = res.data || []
@@ -62,7 +63,6 @@ function handlePageChange(page) {
   fetchRecords()
 }
 
-// 快捷日期范围
 function setQuickRange(days) {
   const today = new Date()
   const start = new Date()
@@ -73,17 +73,26 @@ function setQuickRange(days) {
   fetchRecords()
 }
 
+function goHome() {
+  router.push('/')
+}
+
 onMounted(loadData)
 </script>
 
 <template>
   <div class="history-view">
-    <h2>历史记录</h2>
+    <div class="page-header">
+      <div class="header-left">
+        <el-button :icon="'ArrowLeft'" text @click="goHome">返回</el-button>
+        <h2>历史记录</h2>
+      </div>
+    </div>
 
     <!-- 筛选工具栏 -->
     <div class="filter-bar card">
-      <el-row :gutter="12" align="middle">
-        <el-col :span="4">
+      <el-row :gutter="12" class="filter-row">
+        <el-col :xs="12" :sm="6" :md="4" class="filter-col">
           <el-date-picker
             v-model="filters.start_date"
             type="date"
@@ -92,7 +101,7 @@ onMounted(loadData)
             style="width:100%"
           />
         </el-col>
-        <el-col :span="4">
+        <el-col :xs="12" :sm="6" :md="4" class="filter-col">
           <el-date-picker
             v-model="filters.end_date"
             type="date"
@@ -101,7 +110,7 @@ onMounted(loadData)
             style="width:100%"
           />
         </el-col>
-        <el-col :span="4">
+        <el-col :xs="24" :sm="8" :md="4" class="filter-col">
           <el-input
             v-model="filters.keyword"
             placeholder="搜索标题"
@@ -110,12 +119,12 @@ onMounted(loadData)
             @keyup.enter="handleSearch"
           />
         </el-col>
-        <el-col :span="3">
+        <el-col :xs="12" :sm="6" :md="3" class="filter-col">
           <el-select v-model="filters.tag_id" placeholder="标签" clearable style="width:100%">
             <el-option v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag.id" />
           </el-select>
         </el-col>
-        <el-col :span="3">
+        <el-col :xs="12" :sm="6" :md="5" class="filter-col filter-actions">
           <el-button type="primary" @click="handleSearch">搜索</el-button>
           <el-button @click="handleReset">重置</el-button>
         </el-col>
@@ -136,6 +145,7 @@ onMounted(loadData)
         v-loading="recordsStore.loading"
         stripe
         style="width:100%"
+        :scrollbar-always-on="false"
       >
         <el-table-column prop="id" label="ID" width="60" />
         <el-table-column prop="title" label="任务" min-width="150" show-overflow-tooltip />
@@ -164,6 +174,7 @@ onMounted(loadData)
           :page-size="filters.size"
           :total="recordsStore.totalCount"
           layout="total, prev, pager, next"
+          small
           @current-change="handlePageChange"
         />
       </div>
@@ -173,29 +184,114 @@ onMounted(loadData)
 
 <style scoped>
 .history-view {
-  padding: 24px;
-  overflow-y: auto;
-  height: 100%;
-}
-.history-view h2 {
-  font-size: 20px;
-  color: var(--text-primary);
-  margin-bottom: 16px;
-}
-.filter-bar {
-  margin-bottom: 16px;
-}
-.quick-filters {
-  margin-top: 12px;
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+  overflow: hidden;
+  animation: fadeInUp var(--transition-slow) ease forwards;
 }
+
+.page-header {
+  flex-shrink: 0;
+  margin-bottom: var(--space-lg);
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.header-left h2 {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+/* ---- 筛选栏 ---- */
+.filter-bar {
+  flex-shrink: 0;
+  margin-bottom: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-md) var(--space-lg);
+}
+.filter-row {
+  align-items: center;
+}
+.filter-col {
+  margin-bottom: var(--space-sm);
+}
+.filter-actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.quick-filters {
+  margin-top: var(--space-sm);
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+/* ---- 表格 ---- */
 .table-wrapper {
-  min-height: 400px;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-lg);
+  overflow: hidden;
 }
+
+.table-wrapper :deep(.el-table) {
+  flex: 1;
+}
+
+.table-wrapper :deep(.el-table__body-wrapper) {
+  overflow-y: auto;
+}
+
 .pagination-wrapper {
   display: flex;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+/* ==================== 响应式 ==================== */
+
+@media (max-width: 768px) {
+  .history-view {
+    padding: var(--space-md);
+  }
+  .filter-bar {
+    padding: var(--space-md);
+  }
+  .table-wrapper {
+    padding: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .history-view {
+    padding: var(--space-sm);
+  }
+  .table-wrapper :deep(.el-table__inner-wrapper) {
+    overflow-x: auto;
+  }
 }
 </style>

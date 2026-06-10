@@ -69,26 +69,34 @@ function toggleEnabled() {
 }
 .sound-btn {
   font-size: 18px;
-  padding: 4px 8px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+.sound-btn:hover {
+  background: var(--bg-hover);
 }
 .volume-slider-panel {
   position: absolute;
-  top: 40px;
+  top: 44px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 12px 8px;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-md) var(--space-sm);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-xs);
   z-index: 1000;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 .volume-label {
-  font-size: 12px;
+  font-size: var(--font-xs);
+  font-weight: 600;
   color: var(--text-secondary);
 }
 </style>

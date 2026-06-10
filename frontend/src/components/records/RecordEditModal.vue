@@ -29,7 +29,7 @@ const titleError = computed(() => {
 function toDatetimeLocal(isoStr) {
   if (!isoStr) return ''
   const d = new Date(isoStr)
-  return d.toISOString().slice(0, 16) // 'YYYY-MM-DDTHH:mm' 格式
+  return d.toISOString().slice(0, 16)
 }
 
 watch(() => props.record, (rec) => {
@@ -82,6 +82,7 @@ function handleClose() {
     :model-value="visible"
     title="编辑记录"
     width="480px"
+    :close-on-click-modal="false"
     @close="handleClose"
   >
     <el-form label-position="top">
@@ -109,3 +110,11 @@ function handleClose() {
     </template>
   </el-dialog>
 </template>
+
+<style scoped>
+@media (max-width: 520px) {
+  :deep(.el-dialog) {
+    width: 92% !important;
+  }
+}
+</style>

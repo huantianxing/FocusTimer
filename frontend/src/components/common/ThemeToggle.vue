@@ -42,6 +42,11 @@ function handleToggle() {
 <style scoped>
 .theme-toggle-btn {
   font-size: 18px;
-  padding: 4px 8px;
+  padding: 6px 10px;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+.theme-toggle-btn:hover {
+  background: var(--bg-hover);
 }
 </style>

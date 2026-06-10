@@ -37,29 +37,37 @@ const isPomodoro = computed(() => timerStore.currentRecord?.is_pomodoro === 1)
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: 12px;
+  margin-bottom: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-hover);
+  border-radius: var(--radius-xl);
+  display: inline-flex;
 }
 .cycle-dots {
   display: flex;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 .dot {
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: var(--border-color);
-  transition: background 0.3s ease;
+  transition: all var(--transition-base);
 }
 .dot.active {
   background: var(--success-color);
+  box-shadow: 0 0 8px rgba(5, 150, 105, 0.4);
 }
 .dot.current {
   background: var(--primary-color);
-  box-shadow: 0 0 6px var(--primary-color);
+  box-shadow: 0 0 12px var(--primary-glow);
+  animation: pulse 2s ease-in-out infinite;
 }
 .cycle-label {
-  font-size: 14px;
+  font-size: var(--font-sm);
+  font-weight: 600;
   color: var(--text-secondary);
+  letter-spacing: -0.01em;
 }
 </style>

@@ -4,13 +4,14 @@
  * CRUD 表格：标签名称、颜色、使用次数
  */
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { getTags, createTag, updateTag, deleteTag } from '@/api'
 import { ElMessage, ElMessageBox } from 'element-plus'
 
+const router = useRouter()
 const tags = ref([])
 const loading = ref(false)
 
-// 新建/编辑表单
 const showDialog = ref(false)
 const dialogTitle = ref('新建标签')
 const form = ref({ id: null, name: '', color: '#409EFF' })
@@ -92,18 +93,25 @@ async function handleDelete(tag) {
   } catch { /* 用户取消 */ }
 }
 
+function goHome() {
+  router.push('/')
+}
+
 onMounted(loadTags)
 </script>
 
 <template>
   <div class="tags-view">
     <div class="page-header">
-      <h2>标签管理</h2>
+      <div class="header-left">
+        <el-button :icon="'ArrowLeft'" text @click="goHome">返回</el-button>
+        <h2>标签管理</h2>
+      </div>
       <el-button type="primary" @click="openCreate">新建标签</el-button>
     </div>
 
-    <div class="card">
-      <el-table :data="tags" v-loading="loading" stripe>
+    <div class="table-card card">
+      <el-table :data="tags" v-loading="loading" stripe style="width:100%">
         <el-table-column label="颜色" width="80">
           <template #default="{ row }">
             <span
@@ -156,37 +164,88 @@ onMounted(loadTags)
 
 <style scoped>
 .tags-view {
-  padding: 24px;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   height: 100%;
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+  overflow: hidden;
+  animation: fadeInUp var(--transition-slow) ease forwards;
 }
+
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  flex-shrink: 0;
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
 }
 .page-header h2 {
-  font-size: 20px;
+  font-size: var(--font-xl);
+  font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.03em;
+  margin: 0;
 }
+
+.table-card {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.table-card :deep(.el-table) {
+  flex: 1;
+}
+
 .color-picker-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--space-sm);
 }
 .color-swatch {
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.2s, transform 0.2s;
+  border: 3px solid transparent;
+  transition: all var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 .color-swatch:hover {
-  transform: scale(1.15);
+  transform: scale(1.2);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 .color-swatch.selected {
   border-color: var(--text-primary);
+  box-shadow: 0 0 0 3px var(--primary-glow);
+}
+
+/* ==================== 响应式 ==================== */
+
+@media (max-width: 768px) {
+  .tags-view {
+    padding: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .tags-view {
+    padding: var(--space-sm);
+  }
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 }
 </style>

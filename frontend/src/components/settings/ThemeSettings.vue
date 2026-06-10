@@ -40,35 +40,41 @@ const options = [
 
 <style scoped>
 .theme-settings h4 {
-  font-size: 15px;
+  font-size: var(--font-md);
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-lg);
 }
 .theme-radio-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--space-sm);
 }
 .theme-option {
-  padding: 12px 16px;
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  transition: border-color 0.3s;
+  padding: var(--space-md);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+  background: var(--bg-elevated);
 }
 .theme-option:hover {
   border-color: var(--primary-color);
+  box-shadow: var(--shadow-sm);
 }
 .theme-radio {
   display: flex;
   align-items: center;
 }
 .option-label {
-  font-size: 14px;
-  font-weight: 500;
+  font-size: var(--font-base);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 .option-desc {
   margin: 6px 0 0 24px;
-  font-size: 12px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
+  line-height: 1.5;
 }
 </style>

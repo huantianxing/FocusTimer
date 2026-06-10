@@ -60,22 +60,26 @@ async function handleManualBackup() {
 
 <style scoped>
 .data-settings h4 {
-  font-size: 15px;
+  font-size: var(--font-md);
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-lg);
 }
 .form-tip {
-  margin-top: 4px;
-  font-size: 12px;
+  margin-top: var(--space-xs);
+  font-size: var(--font-xs);
   color: var(--text-muted);
+  line-height: 1.5;
 }
 .about-list {
   list-style: none;
   padding: 0;
-  font-size: 14px;
+  font-size: var(--font-sm);
   color: var(--text-secondary);
 }
 .about-list li {
-  padding: 4px 0;
+  padding: 6px 0;
+  line-height: 1.5;
 }
 </style>

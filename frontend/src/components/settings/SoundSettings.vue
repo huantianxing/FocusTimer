@@ -79,17 +79,21 @@ function handlePreview(eventType) {
 
 <style scoped>
 .sound-settings h4 {
-  font-size: 15px;
+  font-size: var(--font-md);
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-lg);
 }
 .preview-btns {
   display: flex;
-  gap: 8px;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
 }
 .custom-path {
-  margin-top: 8px;
-  font-size: 12px;
+  margin-top: var(--space-sm);
+  font-size: var(--font-xs);
   color: var(--text-muted);
+  word-break: break-all;
 }
 </style>

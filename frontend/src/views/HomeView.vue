@@ -18,7 +18,6 @@ const timerStore = useTimerStore()
 const recordsStore = useRecordsStore()
 
 onMounted(() => {
-  // refresh() 只查一次当前状态：有进行中任务才自动开始轮询，没任务不浪费请求
   timerStore.refresh()
   recordsStore.fetchTodayRecords()
 })
@@ -30,6 +29,7 @@ onUnmounted(() => {
 
 <template>
   <div class="home-view">
+    <!-- 主内容区 -->
     <div class="main-content">
       <!-- 计时面板 -->
       <div class="timer-panel card">
@@ -42,14 +42,14 @@ onUnmounted(() => {
       <TodayOverview />
 
       <!-- 图表区域 -->
-      <el-row :gutter="16">
-        <el-col :span="12">
+      <div class="charts-row">
+        <div class="chart-col">
           <HourlyChart />
-        </el-col>
-        <el-col :span="12">
+        </div>
+        <div class="chart-col">
           <TaskPieChart />
-        </el-col>
-      </el-row>
+        </div>
+      </div>
     </div>
 
     <!-- 侧边栏：今日记录 -->
@@ -63,22 +63,103 @@ onUnmounted(() => {
 .home-view {
   display: flex;
   height: 100%;
+  width: 100%;
   gap: 0;
+  background-color: var(--bg-primary);
 }
+
+/* ---- 主内容区 ---- */
 .main-content {
   flex: 1;
+  min-width: 0;
   overflow-y: auto;
-  padding: 24px;
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
 }
+
 .timer-panel {
-  margin-bottom: 24px;
   text-align: center;
+  border-radius: var(--radius-xl);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-2xl) var(--space-xl) var(--space-xl);
+  position: relative;
+  overflow: hidden;
+  max-width: 800px;
+  width: 100%;
+  align-self: center;
 }
+
+.timer-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-light), var(--success-color));
+}
+
+/* ---- 图表行 ---- */
+.charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-md);
+}
+
+.chart-col {
+  min-width: 0;
+}
+
+/* ---- 侧边栏 ---- */
 .sidebar {
-  width: 320px;
-  border-left: 1px solid var(--border-color);
+  width: clamp(280px, 26%, 380px);
+  border-left: 1px solid var(--border-subtle);
   background-color: var(--bg-card);
   overflow-y: auto;
   flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ==================== 响应式 ==================== */
+
+/* 平板及以下：图表堆叠，侧边栏变窄 */
+@media (max-width: 1100px) {
+  .charts-row {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    width: 260px;
+  }
+}
+
+/* 小平板：侧边栏隐藏在底部（可选折叠）或保留右侧 */
+@media (max-width: 860px) {
+  .home-view {
+    flex-direction: column;
+  }
+  .main-content {
+    padding: var(--space-md);
+  }
+  .sidebar {
+    width: 100%;
+    max-height: 40vh;
+    border-left: none;
+    border-top: 1px solid var(--border-subtle);
+  }
+}
+
+/* 手机 */
+@media (max-width: 640px) {
+  .main-content {
+    padding: var(--space-sm);
+    gap: var(--space-md);
+  }
+  .timer-panel {
+    padding: var(--space-lg) var(--space-md);
+  }
 }
 </style>

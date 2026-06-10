@@ -1,7 +1,20 @@
 /* ============================================================
  * TimerFocus 全局样式
- * 参考: req.md 5.1 / 5.3 节
+ * 设计系统: UI-UX-Pro-Max — Exaggerated Minimalism
+ * 字体: Plus Jakarta Sans
+ * 响应式: 桌面优先 → 平板 → 手机
  * ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* =============================================
+ * 响应式断点（参照 Tailwind / Bootstrap 标准）
+ * --bp-sm: 640px  手机横屏
+ * --bp-md: 768px  平板竖屏
+ * --bp-lg: 1024px 平板横屏 / 小笔记本
+ * --bp-xl: 1280px 标准桌面
+ * --bp-2xl: 1536px 大屏 / 2K
+ * ============================================= */
 
 * {
   margin: 0;
@@ -16,79 +29,185 @@ html, body, #app {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Noto Sans SC', sans-serif;
+  font-weight: 400;
+  font-size: var(--font-base);
+  line-height: 1.6;
   background-color: var(--bg-primary);
   color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color var(--transition-slow), color var(--transition-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
 }
 
-/* 应用主布局 */
+/* =============================================
+ * 应用主布局
+ * ============================================= */
+
 .app-layout {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  width: 100vw;
+  max-width: 100%;
 }
 
 .app-header {
-  height: 56px;
+  height: 60px;
   background-color: var(--bg-card);
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-subtle);
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 var(--space-lg);
   flex-shrink: 0;
   z-index: 100;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: var(--shadow-sm);
 }
 
 .app-body {
   display: flex;
   flex: 1;
+  min-height: 0;
   overflow: hidden;
 }
 
-.app-sidebar {
-  width: 320px;
-  background-color: var(--bg-card);
-  border-right: 1px solid var(--border-color);
-  overflow-y: auto;
-  flex-shrink: 0;
-  transition: background-color 0.3s ease;
+/* =============================================
+ * 响应式容器 — 居中 + 最大宽度约束
+ * ============================================= */
+
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
 }
 
-.app-main {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px;
-  background-color: var(--bg-primary);
-  transition: background-color 0.3s ease;
+@media (max-width: 768px) {
+  .container {
+    padding: 0 var(--space-md);
+  }
 }
 
-/* 卡片通用样式 */
+/* =============================================
+ * 卡片通用样式 — Exaggerated Minimalism
+ * ============================================= */
+
 .card {
   background-color: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 20px;
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  transition: all var(--transition-base);
+  box-shadow: var(--shadow-sm);
 }
 
-/* 滚动条样式（深色模式定制） */
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* 高亮卡片 — 用于计时面板等核心区域 */
+.card-highlight {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl) var(--space-lg);
+  box-shadow: var(--shadow-lg);
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-highlight::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light), var(--success-color));
+  opacity: 0.8;
+}
+
+/* =============================================
+ * 标题层级
+ * ============================================= */
+
+.page-title {
+  font-size: var(--font-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  margin-bottom: var(--space-lg);
+}
+
+.section-title {
+  font-size: var(--font-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-md);
+}
+
+/* =============================================
+ * 响应式间距
+ * ============================================= */
+
+@media (max-width: 768px) {
+  :root {
+    --space-lg: 16px;
+    --space-xl: 20px;
+    --space-2xl: 32px;
+  }
+}
+
+/* =============================================
+ * 滚动条样式
+ * ============================================= */
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
+
+/* 深色模式滚动条 */
 [data-theme="dark"] ::-webkit-scrollbar {
-  width: 6px;
-}
-[data-theme="dark"] ::-webkit-scrollbar-track {
-  background: #1a1a2e;
-}
-[data-theme="dark"] ::-webkit-scrollbar-thumb {
-  background: #4a4a6a;
-  border-radius: 3px;
-}
-[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
-  background: #6a6a8a;
+  width: 5px;
 }
 
-/* Element Plus 全局覆盖 — 让 el-card/el-table 等跟随主题 */
+[data-theme="dark"] ::-webkit-scrollbar-track {
+  background: #0F172A;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 20px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* =============================================
+ * Element Plus 深色模式覆盖
+ * ============================================= */
+
 [data-theme="dark"] .el-card {
   background-color: var(--bg-card);
   border-color: var(--border-color);
@@ -102,27 +221,171 @@ body {
   --el-table-border-color: var(--border-color);
   --el-table-text-color: var(--text-primary);
   --el-table-header-text-color: var(--text-secondary);
+  --el-table-row-hover-bg-color: var(--bg-hover);
+}
+
+[data-theme="dark"] .el-table th.el-table__cell {
+  background-color: var(--bg-hover);
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+[data-theme="dark"] .el-table td.el-table__cell {
+  border-bottom-color: var(--border-color);
 }
 
 [data-theme="dark"] .el-input__wrapper {
-  background-color: var(--bg-hover);
+  background-color: var(--bg-elevated);
   box-shadow: 0 0 0 1px var(--border-color) inset;
+  border-radius: var(--radius-md);
 }
 
 [data-theme="dark"] .el-input__inner {
   color: var(--text-primary);
 }
 
+[data-theme="dark"] .el-input__inner::placeholder {
+  color: var(--text-muted);
+}
+
 [data-theme="dark"] .el-select .el-input .el-input__wrapper {
+  background-color: var(--bg-elevated);
+}
+
+[data-theme="dark"] .el-select-dropdown {
+  background-color: var(--bg-card);
+  border-color: var(--border-color);
+}
+
+[data-theme="dark"] .el-select-dropdown__item {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .el-select-dropdown__item.hover,
+[data-theme="dark"] .el-select-dropdown__item:hover {
   background-color: var(--bg-hover);
 }
 
 [data-theme="dark"] .el-dialog {
   background-color: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+}
+
+[data-theme="dark"] .el-dialog__header {
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+[data-theme="dark"] .el-dialog__title {
+  color: var(--text-primary);
+  font-weight: 700;
 }
 
 [data-theme="dark"] .el-pagination button,
 [data-theme="dark"] .el-pager li {
   background-color: var(--bg-card);
   color: var(--text-primary);
+}
+
+[data-theme="dark"] .el-pager li.is-active {
+  background-color: var(--primary-color);
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .el-tabs__item {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .el-tabs__item.is-active {
+  color: var(--primary-color);
+}
+
+[data-theme="dark"] .el-tabs__nav-wrap::after {
+  background-color: var(--border-subtle);
+}
+
+[data-theme="dark"] .el-radio__label {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .el-button--default {
+  --el-button-bg-color: var(--bg-elevated);
+  --el-button-border-color: var(--border-color);
+  --el-button-text-color: var(--text-primary);
+}
+
+[data-theme="dark"] .el-date-editor {
+  --el-date-editor-bg-color: var(--bg-elevated);
+}
+
+[data-theme="dark"] .el-form-item__label {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .el-divider {
+  border-color: var(--border-subtle);
+}
+
+[data-theme="dark"] .el-alert--info {
+  --el-alert-bg-color: var(--bg-elevated);
+  border-color: var(--border-color);
+}
+
+/* =============================================
+ * Element Plus 浅色模式增强
+ * ============================================= */
+
+:root .el-button--primary {
+  --el-button-bg-color: var(--primary-color);
+  --el-button-border-color: var(--primary-color);
+  --el-button-hover-bg-color: var(--primary-light);
+  --el-button-hover-border-color: var(--primary-light);
+  --el-button-active-bg-color: var(--primary-dark);
+  --el-button-active-border-color: var(--primary-dark);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  transition: all var(--transition-base);
+}
+
+:root .el-input__wrapper {
+  border-radius: var(--radius-md);
+  transition: all var(--transition-base);
+}
+
+:root .el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px var(--primary-light) inset;
+}
+
+:root .el-select .el-input.is-focus .el-input__wrapper {
+  box-shadow: 0 0 0 1px var(--primary-color) inset;
+}
+
+/* =============================================
+ * 通用动画
+ * ============================================= */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.fade-in-up {
+  animation: fadeInUp var(--transition-slow) ease forwards;
 }

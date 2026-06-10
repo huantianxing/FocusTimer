@@ -37,32 +37,48 @@ const statusClass = computed(() => ({
 <style scoped>
 .timer-display {
   text-align: center;
-  padding: 40px 20px;
-  transition: color 0.3s ease;
+  padding: var(--space-xl) var(--space-lg);
+  transition: color var(--transition-base);
 }
 .timer-time {
-  font-size: 72px;
-  font-weight: 200;
-  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-  letter-spacing: 4px;
-  line-height: 1.2;
+  font-size: clamp(40px, 10vw, var(--font-hero));
+  font-weight: 300;
+  font-family: 'Plus Jakarta Sans', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
   color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+  transition: all var(--transition-base);
+  word-break: keep-all;
 }
 .timer-active .timer-time {
   color: var(--primary-color);
+  text-shadow: 0 0 40px var(--primary-glow);
 }
 .timer-paused .timer-time {
   color: var(--warning-color);
+  text-shadow: 0 0 24px rgba(234, 88, 12, 0.15);
 }
 .timer-title {
-  margin-top: 12px;
-  font-size: 20px;
+  margin-top: var(--space-md);
+  font-size: var(--font-lg);
   color: var(--text-primary);
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .timer-placeholder {
-  margin-top: 12px;
-  font-size: 16px;
+  margin-top: var(--space-md);
+  font-size: var(--font-md);
   color: var(--text-muted);
+  font-weight: 400;
+}
+
+@media (max-width: 480px) {
+  .timer-display {
+    padding: var(--space-md) var(--space-sm);
+  }
 }
 </style>

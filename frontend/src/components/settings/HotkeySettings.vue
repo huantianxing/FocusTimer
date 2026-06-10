@@ -61,8 +61,13 @@ async function save() {
 
 <style scoped>
 .hotkey-settings h4 {
-  font-size: 15px;
+  font-size: var(--font-md);
+  font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-lg);
+}
+:deep(.el-button--primary) {
+  margin-top: var(--space-md);
 }
 </style>

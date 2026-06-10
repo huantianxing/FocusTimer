@@ -171,23 +171,32 @@ onMounted(() => {
 
 <style scoped>
 .quick-templates {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-lg);
+  padding: var(--space-md);
+  background: var(--bg-hover);
+  border-radius: var(--radius-md);
 }
 .section-label {
-  font-size: 12px;
+  font-size: var(--font-xs);
+  font-weight: 600;
   color: var(--text-muted);
-  margin-bottom: 8px;
+  margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 .template-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 .template-tag {
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all var(--transition-fast);
+  border-radius: var(--radius-sm);
+  font-weight: 500;
 }
 .template-tag:hover {
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
 }
 </style>

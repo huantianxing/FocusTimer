@@ -13,6 +13,7 @@ import { getChartTheme, getAxisConfig } from '@/utils/chartConfig'
 const themeStore = useThemeStore()
 const chartRef = ref(null)
 let chart = null
+let resizeObserver = null
 
 const days = ref(7)
 
@@ -66,7 +67,9 @@ async function load() {
   } catch { /* ignore */ }
 }
 
-function handleResize() { chart?.resize() }
+function handleResize() {
+  chart?.resize()
+}
 
 function changeDays(d) {
   days.value = d
@@ -83,11 +86,17 @@ watch(() => themeStore.resolved, () => {
 
 onMounted(() => {
   load()
-  window.addEventListener('resize', handleResize)
+  // 使用 ResizeObserver 监听容器大小变化
+  if (chartRef.value) {
+    resizeObserver = new ResizeObserver(() => {
+      chart?.resize()
+    })
+    resizeObserver.observe(chartRef.value)
+  }
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize)
+  resizeObserver?.disconnect()
   chart?.dispose()
 })
 </script>
@@ -108,20 +117,38 @@ onUnmounted(() => {
 
 <style scoped>
 .chart-container {
-  margin-bottom: 16px;
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-lg);
+  transition: all var(--transition-base);
+  display: flex;
+  flex-direction: column;
+}
+.chart-container:hover {
+  box-shadow: var(--shadow-md);
 }
 .chart-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-md);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
 }
 .chart-title {
-  font-size: 15px;
+  font-size: var(--font-md);
+  font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin: 0;
 }
 .chart-body {
+  flex: 1;
+  min-height: 240px;
   width: 100%;
-  height: 280px;
 }
 </style>
